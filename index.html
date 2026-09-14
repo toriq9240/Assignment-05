@@ -117,5 +117,125 @@
 </footer>
 
 <div class="toast-container" id="toastContainer"></div>
+<script>
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+});
+
+document.getElementById('copyrightYear').textContent =
+  `© ${new Date().getFullYear()} Dev Stack. All rights reserved.`;
+
+let technologies = [];
+let stack = [];
+
+function showToast(message, type) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
+}
+
+function renderTechGrid() {
+  const grid = document.getElementById('techGrid');
+  grid.innerHTML = '';
+  technologies.forEach((tech) => {
+    const isAdded = stack.some((t) => t.id === tech.id);
+    const card = document.createElement('div');
+    card.className = 'tech-card';
+    card.innerHTML = `
+      <div class="tech-card-top">
+        <img src="${tech.icon}" alt="${tech.name}">
+        <span class="badge">${tech.badge}</span>
+      </div>
+      <h3>${tech.name}</h3>
+      <p>${tech.description}</p>
+      <div class="tech-meta">
+        <span class="category-chip">${tech.category}</span>
+        <span>${tech.difficulty}</span>
+        <span class="rating"><span class="star">★</span> ${tech.rating.toFixed(1)}</span>
+      </div>
+      <button class="add-btn ${isAdded ? 'added' : ''}" data-id="${tech.id}" ${isAdded ? 'disabled' : ''}>
+        ${isAdded ? '✓ Added to Stack' : 'Add to Stack'}
+      </button>
+    `;
+    grid.appendChild(card);
+  });
+
+  grid.querySelectorAll('.add-btn').forEach((btn) => {
+    btn.addEventListener('click', () => addToStack(btn.dataset.id));
+  });
+}
+
+function renderStack() {
+  const list = document.getElementById('stackList');
+  const count = document.getElementById('stackCount');
+  const removeAllBtn = document.getElementById('removeAllBtn');
+
+  count.textContent = stack.length === 0
+    ? 'No technologies selected yet.'
+    : `${stack.length} Technology Selected`;
+
+  if (stack.length === 0) {
+    list.innerHTML = '<div class="stack-empty">Your stack is empty.</div>';
+    removeAllBtn.style.display = 'none';
+    return;
+  }
+
+  removeAllBtn.style.display = 'block';
+  list.innerHTML = stack.map((tech) => `
+    <div class="stack-item">
+      <img src="${tech.icon}" alt="${tech.name}">
+      <div class="stack-item-info">
+        <div class="name">${tech.name}</div>
+        <div class="cat">${tech.category}</div>
+      </div>
+      <button data-id="${tech.id}">✕</button>
+    </div>
+  `).join('');
+
+  list.querySelectorAll('button').forEach((btn) => {
+    btn.addEventListener('click', () => removeFromStack(btn.dataset.id));
+  });
+}
+
+function addToStack(id) {
+  const tech = technologies.find((t) => t.id === id);
+  if (stack.some((t) => t.id === id)) {
+    showToast(`${tech.name} is already in your stack.`, 'warning');
+    return;
+  }
+  stack.push(tech);
+  showToast(`${tech.name} added to your stack.`, 'success');
+  renderTechGrid();
+  renderStack();
+}
+
+function removeFromStack(id) {
+  const tech = stack.find((t) => t.id === id);
+  stack = stack.filter((t) => t.id !== id);
+  showToast(`${tech.name} removed from your stack.`, 'info');
+  renderTechGrid();
+  renderStack();
+}
+
+document.getElementById('removeAllBtn').addEventListener('click', () => {
+  stack = [];
+  showToast('Your stack has been cleared.', 'info');
+  renderTechGrid();
+  renderStack();
+});
+
+fetch('data.json')
+  .then((res) => res.json())
+  .then((data) => {
+    technologies = data;
+    renderTechGrid();
+    renderStack();
+  });
+</script>
 </body>
 </html>
