@@ -10,7 +10,8 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="navbar">
+
+<header class="navbar">
   <button class="hamburger" id="hamburger">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
@@ -35,6 +36,7 @@
     <a href="#signup" class="signup">Sign Up</a>
   </div>
 </header>
+
 <section class="hero" id="home">
   <div class="hero-text">
     <h1>
@@ -51,6 +53,7 @@
     <img src="assets/banner-stack.png" alt="stack illustration">
   </div>
 </section>
+
 <section class="technologies" id="technologies">
   <h2>Explore the <span class="hero-gradient">Technologies</span></h2>
   <p class="section-sub">Pick one technology per category to build your ideal stack.</p>
@@ -71,6 +74,7 @@
     </aside>
   </div>
 </section>
+
 <footer class="footer" id="about">
   <div class="footer-top">
     <div class="footer-brand">
@@ -117,6 +121,7 @@
 </footer>
 
 <div class="toast-container" id="toastContainer"></div>
+
 <script>
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
@@ -169,10 +174,11 @@ function renderTechGrid() {
     btn.addEventListener('click', () => addToStack(btn.dataset.id));
   });
 }
+
 function renderStack() {
   const list = document.getElementById('stackList');
   const count = document.getElementById('stackCount');
-  cnst removeAllBtn = document.getElementById('removeAllBtn');
+  const removeAllBtn = document.getElementById('removeAllBtn');
 
   count.textContent = stack.length === 0
     ? 'No technologies selected yet.'
@@ -183,6 +189,7 @@ function renderStack() {
     removeAllBtn.style.display = 'none';
     return;
   }
+
   removeAllBtn.style.display = 'block';
   list.innerHTML = stack.map((tech) => `
     <div class="stack-item">
@@ -194,10 +201,12 @@ function renderStack() {
       <button data-id="${tech.id}">✕</button>
     </div>
   `).join('');
+
   list.querySelectorAll('button').forEach((btn) => {
     btn.addEventListener('click', () => removeFromStack(btn.dataset.id));
   });
 }
+
 function addToStack(id) {
   const tech = technologies.find((t) => t.id === id);
   if (stack.some((t) => t.id === id)) {
@@ -209,6 +218,7 @@ function addToStack(id) {
   renderTechGrid();
   renderStack();
 }
+
 function removeFromStack(id) {
   const tech = stack.find((t) => t.id === id);
   stack = stack.filter((t) => t.id !== id);
@@ -216,12 +226,14 @@ function removeFromStack(id) {
   renderTechGrid();
   renderStack();
 }
+
 document.getElementById('removeAllBtn').addEventListener('click', () => {
   stack = [];
   showToast('Your stack has been cleared.', 'info');
   renderTechGrid();
   renderStack();
 });
+
 fetch('data.json')
   .then((res) => res.json())
   .then((data) => {
@@ -232,3 +244,4 @@ fetch('data.json')
 </script>
 </body>
 </html>
+<!-- sjfdcasiofcjapofvckl.;psdx;s;qadfc -->
