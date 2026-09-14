@@ -169,11 +169,10 @@ function renderTechGrid() {
     btn.addEventListener('click', () => addToStack(btn.dataset.id));
   });
 }
-
 function renderStack() {
   const list = document.getElementById('stackList');
   const count = document.getElementById('stackCount');
-  const removeAllBtn = document.getElementById('removeAllBtn');
+  cnst removeAllBtn = document.getElementById('removeAllBtn');
 
   count.textContent = stack.length === 0
     ? 'No technologies selected yet.'
@@ -184,7 +183,6 @@ function renderStack() {
     removeAllBtn.style.display = 'none';
     return;
   }
-
   removeAllBtn.style.display = 'block';
   list.innerHTML = stack.map((tech) => `
     <div class="stack-item">
@@ -196,12 +194,10 @@ function renderStack() {
       <button data-id="${tech.id}">✕</button>
     </div>
   `).join('');
-
   list.querySelectorAll('button').forEach((btn) => {
     btn.addEventListener('click', () => removeFromStack(btn.dataset.id));
   });
 }
-
 function addToStack(id) {
   const tech = technologies.find((t) => t.id === id);
   if (stack.some((t) => t.id === id)) {
@@ -213,7 +209,6 @@ function addToStack(id) {
   renderTechGrid();
   renderStack();
 }
-
 function removeFromStack(id) {
   const tech = stack.find((t) => t.id === id);
   stack = stack.filter((t) => t.id !== id);
@@ -221,14 +216,12 @@ function removeFromStack(id) {
   renderTechGrid();
   renderStack();
 }
-
 document.getElementById('removeAllBtn').addEventListener('click', () => {
   stack = [];
   showToast('Your stack has been cleared.', 'info');
   renderTechGrid();
   renderStack();
 });
-
 fetch('data.json')
   .then((res) => res.json())
   .then((data) => {
