@@ -1,0 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --gradient: linear-gradient(90deg, #ff7a45 0%, #ec348c 55%, #7c3aed 100%);
+  --ink: #0f1222;
+  --muted: #64748b;
+  --border: #e2e8f0;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+h1, h2, h3, .logo-text {
+  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
